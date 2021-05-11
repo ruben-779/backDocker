@@ -1,14 +1,21 @@
-FROM ubuntu 
+FROM node:14
 
-RUN echo "Instalando..."
+# Create app directory
+WORKDIR /usr/src/app
 
-RUN apt-get update 
-RUN apt-get install -y npm 
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-COPY . /usr/local/bin/
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
-EXPOSE 3000
+# Bundle app source
+COPY . .
 
-CMD ["node"]
+EXPOSE 8080
+CMD [ "node", "server.js" ]
 
 
